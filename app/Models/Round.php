@@ -7,5 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Round extends Model
 {
+    protected $fillable = ['competition_id'];
+    public $timestamps = false;
+
     use HasFactory;
+
+    function competition ()
+    {
+        return $this->belongsTo(Competition::class);
+    }
 }

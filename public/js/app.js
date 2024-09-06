@@ -18,9 +18,7 @@ function validateInput(competition) {
     if (isValidDate(competition.start_date) && isValidDate(competition.end_date) && new Date(competition.start_date) > new Date(competition.end_date)) {
         errors.push('A kezdési dátum nem lehet későbbi, mint a befejezési dátum');
     }
-
     //majd meg kell nezni hogy az adatbazisban nincs mar egy ilyen nev + ev kombinacio
-
     return errors;
 }
 
@@ -41,6 +39,28 @@ function showAlert(message, type) {
     }, 5000);
 }
 
+function addRound(competitionId) {
+    $.post('/api/newRound', { competition_id: competitionId })
+        .done(function(response) {
+            showAlert('Sikeres hozzáadás', 'success');
+            //render competition
+        })
+        .fail(function(error) {
+            showAlert('A hozzáadás nem sikerült', 'danger');
+        });
+}
+
+function addCompetition(data) {
+    $.post('/api/newCompetition', data)
+        .done(function(response) {
+            showAlert('Sikeres hozzáadás', 'success');
+            //render competition
+        })
+        .fail(function(error) {
+            showAlert('A hozzáadás nem sikerült', 'danger');
+        });
+}
+
 $(document).ready(function () {
     $('#newElement').on('show.bs.modal', () => $('#newForm')[0].reset());
 
@@ -51,16 +71,11 @@ $(document).ready(function () {
         const start_date = $('#start_date').val();
         const end_date = $('#end_date').val();
 
-        const errors = validateInput({ name, year, prize_pool, start_date, end_date });
+        const data = { name, year, prize_pool, start_date, end_date };
+        const errors = validateInput(data);
+
         if (errors.length === 0) {
-            $.post('/api/newCompetition', { name, year, prize_pool, start_date, end_date })
-                .done(function(response) {
-                    showAlert('Sikeres hozzáadás', 'success');
-                })
-                .fail(function(error) {
-                    showAlert('A hozzáadás nem sikerült', 'danger');
-                });
-            //renderCompetitions();
+            addCompetition(data);
         } else {
             showAlert('Hibák: ' + errors.join(', '), 'warning');
         }

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\CompetitionController;
+use App\Http\Controllers\API\RoundController;
+use App\Models\Competition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -9,3 +11,9 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/newCompetition', [CompetitionController::class, 'newCompetition']);
+
+Route::post('/newRound', [RoundController::class, 'newRound']);
+
+Route::get('/getCompetitions', function () {
+    return Competition::all();
+});
