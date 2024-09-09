@@ -24,8 +24,15 @@ class RoundController extends Controller
         }
 
         try {
+            $latestRound = Round::where('competition_id', $request->input('competition_id'))
+                ->orderBy('round_number', 'desc')
+                ->first();
+
+            $roundNumber = $latestRound ? $latestRound->round_number + 1 : 1;
+
             $round = Round::create([
                 'competition_id' => $request->input('competition_id'),
+                'round_number' => $roundNumber,
             ]);
 
             return response()->json([

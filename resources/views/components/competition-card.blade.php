@@ -27,8 +27,8 @@
         <div class="mt-4">
             <h6>Forduló:</h6>
             <ul class="list-group mb-3">
-                @foreach($competition->round as $round)
-                    <li class="list-group-item">{{ $loop->index + 1 }}. Furduló</li>
+                @foreach($competition->round->sortBy('round_number') as $round)
+                    <li class="list-group-item">{{ $round->round_number }}. Furduló</li>
                 @endforeach
             </ul>
             <button class="btn btn-outline-success" onclick="addRound({{ $competition->id }})">Forduló hozzáadása</button>
