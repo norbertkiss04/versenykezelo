@@ -9,6 +9,12 @@ use App\Models\Competition;
 
 class CompetitionController extends Controller
 {
+    public function renderCompetitionCards()
+    {
+        $competitions = Competition::all();
+        return view('components.competition-cards', compact('competitions'));
+    }
+
     function newCompetition(Request $request){
         $validator = Validator::make($request->all(), [
             'name' =>'required|string|min:1|max:24',

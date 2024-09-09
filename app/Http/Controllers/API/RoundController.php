@@ -24,8 +24,12 @@ class RoundController extends Controller
         }
 
         try {
+            $totalRounds = Round::withTrashed()->where('competition_id', $request->input('competition_id'))->count();
+            $nextRoundNumber = $totalRounds + 1;
+
             $round = Round::create([
                 'competition_id' => $request->input('competition_id'),
+                'round_number' => $nextRoundNumber,
             ]);
 
             return response()->json([

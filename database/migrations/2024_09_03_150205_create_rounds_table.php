@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('competition_id');
             $table->foreign('competition_id')->references('id')->on('competitions')->onUpdate('cascade')->onDelete('cascade');
+            $table->integer('round_number');
+            $table->softDeletes();
         });
     }
 
@@ -24,5 +26,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('rounds');
+
     }
 };

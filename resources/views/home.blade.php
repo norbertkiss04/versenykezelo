@@ -21,13 +21,7 @@
 <x-new-competition></x-new-competition>
 
 <!-- COMPETITIONS -->
-<div class="d-flex justify-content-center gap-3 flex-wrap custom-card-container">
-    @foreach(\App\Models\Competition::all() as $competition)
-        <div class="col-md-4 custom-card">
-            <x-competition-card :competition="$competition" />
-        </div>
-    @endforeach
-</div>
+<div class="d-flex justify-content-center gap-3 flex-wrap custom-card-container"></div>
 
 
 <div id="alertContainer" class="alert" role="alert" style="display: none;"></div>

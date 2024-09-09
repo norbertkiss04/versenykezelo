@@ -27,6 +27,12 @@ function isValidDate(dateString) {
     return !isNaN(date.getTime());
 }
 
+function rerenderCards() {
+    $.get('/competitions/render', function(data) {
+        $('.custom-card-container').html(data);
+    });
+}
+
 function showAlert(message, type) {
     const alertContainer = $('#alertContainer');
     alertContainer.removeClass();
@@ -43,10 +49,11 @@ function addRound(competitionId) {
     $.post('/api/newRound', { competition_id: competitionId })
         .done(function(response) {
             showAlert('Sikeres hozzáadás', 'success');
-            //render competition
+            rerenderCards();
         })
         .fail(function(error) {
             showAlert('A hozzáadás nem sikerült', 'danger');
+            console.log(error)
         });
 }
 
@@ -54,7 +61,7 @@ function addCompetition(data) {
     $.post('/api/newCompetition', data)
         .done(function(response) {
             showAlert('Sikeres hozzáadás', 'success');
-            //render competition
+            rerenderCards();
         })
         .fail(function(error) {
             showAlert('A hozzáadás nem sikerült', 'danger');
@@ -62,6 +69,8 @@ function addCompetition(data) {
 }
 
 $(document).ready(function () {
+    rerenderCards();
+
     $('#newElement').on('show.bs.modal', () => $('#newForm')[0].reset());
 
     $('#createButton').on('click', () => {
