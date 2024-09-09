@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('rounds', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('competition_id');
+            $table->unsignedInteger('round_number');
             $table->foreign('competition_id')->references('id')->on('competitions')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('round_number');
             $table->softDeletes();
