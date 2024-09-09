@@ -62,6 +62,8 @@ function addCompetition(data) {
         .done(function(response) {
             showAlert('Sikeres hozzáadás', 'success');
             rerenderCards();
+            $('#newCompetition').modal('hide');
+            $('#competitionForm')[0].reset();
         })
         .fail(function(error) {
             showAlert('A hozzáadás nem sikerült', 'danger');
@@ -70,9 +72,6 @@ function addCompetition(data) {
 
 $(document).ready(function () {
     rerenderCards();
-
-    $('#newElement').on('show.bs.modal', () => $('#newForm')[0].reset());
-
     $('#createButton').on('click', () => {
         const name = $('#name').val().trim();
         const year = parseInt($('#year').val().trim());
