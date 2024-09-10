@@ -1,4 +1,5 @@
 let userRole = null;
+
 function validateInput(competition) {
     const errors = [];
     if (typeof competition.name !== 'string' || competition.name.trim().length < 1 || competition.name.trim().length > 24) {
@@ -11,15 +12,14 @@ function validateInput(competition) {
         errors.push('Hibás nyeremény');
     }
     if (!isValidDate(competition.start_date)) {
-        errors.push('Hibas kezdeti dátum');
+        errors.push('Hibás kezdeti dátum');
     }
     if (!isValidDate(competition.end_date)) {
-        errors.push('Hibas befejezési dátum');
+        errors.push('Hibás befejezési dátum');
     }
     if (isValidDate(competition.start_date) && isValidDate(competition.end_date) && new Date(competition.start_date) > new Date(competition.end_date)) {
         errors.push('A kezdési dátum nem lehet későbbi, mint a befejezési dátum');
     }
-    //majd meg kell nezni hogy az adatbazisban nincs mar egy ilyen nev + ev kombinacio
     return errors;
 }
 
@@ -31,11 +31,7 @@ function isValidDate(dateString) {
 function rerenderCards() {
     $.get('/competitions/render', function(data) {
         $('.custom-card-container').html(data);
-        if (userRole === 'admin') {
-            $('[data-admin-only="true"]').show();
-        } else {
-            $('[data-admin-only="true"]').hide();
-        }
+        toggleAdminControls();
     }).fail(function(jqXHR, textStatus, errorThrown) {
         console.error("AJAX error: " + textStatus + ' : ' + errorThrown);
         showAlert('Failed to load competitions', 'danger');
@@ -44,8 +40,7 @@ function rerenderCards() {
 
 function showAlert(message, type) {
     const alertContainer = $('#alertContainer');
-    alertContainer.removeClass();
-    alertContainer.addClass(`alert alert-${type} alert-dismissible fade show`);
+    alertContainer.removeClass().addClass(`alert alert-${type} alert-dismissible fade show`);
     alertContainer.text(message);
     alertContainer.show();
 
@@ -54,9 +49,19 @@ function showAlert(message, type) {
     }, 5000);
 }
 
+function toggleAdminControls() {
+    if (userRole === 'admin') {
+        $('#adminControls').show();
+        $('[data-admin-only="true"]').show();
+    } else {
+        $('#adminControls').hide();
+        $('[data-admin-only="true"]').hide();
+    }
+}
+
 function addRound(competitionId) {
     if (userRole !== 'admin') {
-        showAlert('Only admins can add rounds', 'warning');
+        showAlert('Csak adminok adhatnak hozzá fordulókat', 'warning');
         return;
     }
 
@@ -76,12 +81,11 @@ function addRound(competitionId) {
             console.log(error);
         }
     });
-
 }
 
 function addCompetition(data) {
     if (userRole !== 'admin') {
-        showAlert('Only admins can add competitions', 'warning');
+        showAlert('Csak adminok adhatnak hozzá versenyeket', 'warning');
         return;
     }
 
@@ -107,7 +111,6 @@ function addCompetition(data) {
 function login(username) {
     $.post('/api/login', { username: username })
         .done(function(response) {
-            console.log('Login response:', response);
             if (response.success) {
                 userRole = response.role;
                 localStorage.setItem('userRole', userRole);
@@ -117,7 +120,6 @@ function login(username) {
             }
         })
         .fail(function(error) {
-            console.log('Login failed:', error);
             showAlert('Login failed', 'danger');
         });
 }
@@ -136,13 +138,7 @@ function showLoginForm() {
 function showMainContent() {
     $('#loginContainer').hide();
     $('#mainContent').show();
-    if (userRole === 'admin') {
-        $('#adminControls').show();
-        $('[data-admin-only="true"]').show();
-    } else {
-        $('#adminControls').hide();
-        $('[data-admin-only="true"]').hide();
-    }
+    toggleAdminControls();
     rerenderCards();
 }
 
@@ -162,7 +158,7 @@ $(document).ready(function () {
     $('#loginButton').on('click', function() {
         const username = $('#username').val().trim();
         if (username.length === 0) {
-            showAlert('Username cannot be empty', 'danger');
+            showAlert('Felhasználónév nem lehet üres', 'danger');
             return;
         }
         login(username);
@@ -178,7 +174,7 @@ $(document).ready(function () {
 
     $('#createButton').on('click', () => {
         if (userRole !== 'admin') {
-            showAlert('Only admins can add competitions', 'warning');
+            showAlert('Csak adminok adhatnak hozzá versenyeket', 'warning');
             return;
         }
 

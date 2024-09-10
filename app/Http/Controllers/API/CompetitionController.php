@@ -23,7 +23,7 @@ class CompetitionController extends Controller
     public function newCompetition(Request $request)
     {
         if (!$this->isAdmin($request)) {
-            return response()->json(['success' => false, 'message' => 'Only admins can create competitions'], 403);
+            return response()->json(['success' => false, 'message' => 'Csak adminok hozhatnak létre versenyeket'], 403);
         }
 
         $validator = Validator::make($request->all(), [
@@ -52,7 +52,7 @@ class CompetitionController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Competition created successfully',
+                'message' => 'Verseny sikeresen létrehozva',
             ], 201);
         }
         catch (\Exception $e) {

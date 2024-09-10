@@ -17,7 +17,7 @@ class RoundController extends Controller
     public function newRound(Request $request)
     {
         if (!$this->isAdmin($request)) {
-            return response()->json(['success' => false, 'message' => 'Only admins can add rounds'], 403);
+            return response()->json(['success' => false, 'message' => 'Csak adminok adhatnak hozzá fordulókat'], 403);
         }
 
         $validator = Validator::make($request->all(), [
@@ -27,7 +27,7 @@ class RoundController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Validation failed',
+                'message' => 'Hiba történt validálás során',
                 'errors' => $validator->errors(),
             ], 403);
         }
@@ -43,7 +43,7 @@ class RoundController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'New round added successfully!',
+                'message' => 'Forduló sikeresen hozzáadva',
                 'round' => $round,
             ], 201);
 

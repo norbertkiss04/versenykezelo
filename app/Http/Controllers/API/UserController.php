@@ -30,7 +30,6 @@ class UserController extends Controller
             ->exists();
 
         if ($isCompetitor) {
-            //versenyo nezet
             return response()->json(['success' => false, 'message' => 'Versenyzo']);
         } else {
             return response()->json(['success' => true, 'role' => 'user']);
