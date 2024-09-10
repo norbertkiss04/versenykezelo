@@ -32,7 +32,9 @@
                         <li class="list-group-item">{{ $round->round_number }}. Furduló</li>
                     @endforeach
                 </ul>
-                <button class="btn btn-outline-success" onclick="addRound({{ $competition->id }})">Forduló hozzáadása</button>
+                <div class="admin-controls" data-admin-only="true" style="display: none;">
+                    <button class="btn btn-outline-success add-round-btn" data-competition-id="{{ $competition->id }}">Forduló hozzáadása</button>
+                </div>
             </div>
         </div>
     </div>

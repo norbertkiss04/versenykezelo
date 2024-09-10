@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('competitors', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('round_id');
+            $table->unsignedBigInteger('user_id');
             $table->foreign('round_id')->references('id')->on('rounds')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('app_users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

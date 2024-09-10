@@ -11,13 +11,23 @@ class CompetitionController extends Controller
 {
     public function renderCompetitionCards()
     {
-        $competitions = Competition::all();
-        return view('components.competition-cards', compact('competitions'));
+        $competitions = Competition::with('round')->get();
+        return view('components.competition-cards', compact('competitions'))->render();
     }
 
-    function newCompetition(Request $request){
+    private function isAdmin(Request $request)
+    {
+        return $request->header('X-User-Role') === 'admin';
+    }
+
+    public function newCompetition(Request $request)
+    {
+        if (!$this->isAdmin($request)) {
+            return response()->json(['success' => false, 'message' => 'Only admins can create competitions'], 403);
+        }
+
         $validator = Validator::make($request->all(), [
-            'name' =>'required|string|min:1|max:24',
+            'name' => 'required|string|min:1|max:24',
             'year' => 'required|integer|min:0|max:2024',
             'prize_pool' => 'required|numeric|min:0|max:100000000',
             'start_date' => 'required|date|before_or_equal:end_date',
@@ -40,13 +50,12 @@ class CompetitionController extends Controller
                 'end_date' => $request->input('end_date')
             ]);
 
-
             return response()->json([
                 'success' => true,
                 'message' => 'Competition created successfully',
             ], 201);
         }
-        catch (\Exception $e){
+        catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' =>  $e->getMessage(),

@@ -13,17 +13,38 @@
     <link rel="stylesheet" href="{{asset('app.css')}}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
-<body class="p-2">
+<body class="bg-light">
 
-<button type="button" id="myModal" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#newCompetition">Új verseny</button>
-`
-<!-- NEW COMPETITION MODAL -->
-<x-new-competition></x-new-competition>
+<x-user-login></x-user-login>
 
-<!-- COMPETITIONS -->
-<div class="d-flex justify-content-center gap-3 flex-wrap custom-card-container"></div>
+<div id="mainContent" class="container-fluid px-0" style="display: none;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <div class="container">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item" id="adminControls" style="display: none;">
+                        <button id="showModalButton" class="btn btn-primary">Új verseny</button>
+                    </li>
+                </ul>
+                <button id="logoutButton" class="btn btn-outline-danger">Kijelentkezés</button>
+            </div>
+        </div>
+    </nav>
 
+    <!-- NEW COMPETITION MODAL -->
+    <x-new-competition></x-new-competition>
 
-<div id="alertContainer" class="alert" role="alert" style="display: none;"></div>
+    <!-- COMPETITIONS -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="d-flex justify-content-center gap-3 flex-wrap custom-card-container"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="alertContainer" class="alert position-fixed top-0 end-0 m-3" role="alert" style="display: none; z-index: 1050;"></div>
+
 </body>
 </html>

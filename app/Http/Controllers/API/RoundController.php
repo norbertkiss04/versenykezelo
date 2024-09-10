@@ -9,8 +9,17 @@ use App\Models\Round;
 
 class RoundController extends Controller
 {
+    private function isAdmin(Request $request)
+    {
+        return $request->header('X-User-Role') === 'admin';
+    }
+
     public function newRound(Request $request)
     {
+        if (!$this->isAdmin($request)) {
+            return response()->json(['success' => false, 'message' => 'Only admins can add rounds'], 403);
+        }
+
         $validator = Validator::make($request->all(), [
             'competition_id' => 'required|exists:competitions,id',
         ]);

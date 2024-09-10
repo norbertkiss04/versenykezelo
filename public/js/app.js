@@ -1,3 +1,4 @@
+let userRole = null;
 function validateInput(competition) {
     const errors = [];
     if (typeof competition.name !== 'string' || competition.name.trim().length < 1 || competition.name.trim().length > 24) {
@@ -30,6 +31,14 @@ function isValidDate(dateString) {
 function rerenderCards() {
     $.get('/competitions/render', function(data) {
         $('.custom-card-container').html(data);
+        if (userRole === 'admin') {
+            $('[data-admin-only="true"]').show();
+        } else {
+            $('[data-admin-only="true"]').hide();
+        }
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.error("AJAX error: " + textStatus + ' : ' + errorThrown);
+        showAlert('Failed to load competitions', 'danger');
     });
 }
 
@@ -46,33 +55,133 @@ function showAlert(message, type) {
 }
 
 function addRound(competitionId) {
-    $.post('/api/newRound', { competition_id: competitionId })
-        .done(function(response) {
+    if (userRole !== 'admin') {
+        showAlert('Only admins can add rounds', 'warning');
+        return;
+    }
+
+    $.ajax({
+        url: '/api/newRound',
+        method: 'POST',
+        data: { competition_id: competitionId },
+        headers: {
+            'X-User-Role': userRole
+        },
+        success: function(response) {
             showAlert('Sikeres hozzáadás', 'success');
             rerenderCards();
-        })
-        .fail(function(error) {
+        },
+        error: function(error) {
             showAlert('A hozzáadás nem sikerült', 'danger');
-            console.log(error)
-        });
+            console.log(error);
+        }
+    });
+
 }
 
 function addCompetition(data) {
-    $.post('/api/newCompetition', data)
-        .done(function(response) {
+    if (userRole !== 'admin') {
+        showAlert('Only admins can add competitions', 'warning');
+        return;
+    }
+
+    $.ajax({
+        url: '/api/newCompetition',
+        method: 'POST',
+        data: data,
+        headers: {
+            'X-User-Role': userRole
+        },
+        success: function(response) {
             showAlert('Sikeres hozzáadás', 'success');
             rerenderCards();
             $('#newCompetition').modal('hide');
             $('#competitionForm')[0].reset();
+        },
+        error: function(error) {
+            showAlert('A hozzáadás nem sikerült', 'danger');
+        }
+    });
+}
+
+function login(username) {
+    $.post('/api/login', { username: username })
+        .done(function(response) {
+            console.log('Login response:', response);
+            if (response.success) {
+                userRole = response.role;
+                localStorage.setItem('userRole', userRole);
+                showMainContent();
+            } else {
+                showAlert(response.message, 'danger');
+            }
         })
         .fail(function(error) {
-            showAlert('A hozzáadás nem sikerült', 'danger');
+            console.log('Login failed:', error);
+            showAlert('Login failed', 'danger');
         });
 }
 
-$(document).ready(function () {
+function logout() {
+    userRole = null;
+    localStorage.removeItem('userRole');
+    showLoginForm();
+}
+
+function showLoginForm() {
+    $('#loginContainer').show();
+    $('#mainContent').hide();
+}
+
+function showMainContent() {
+    $('#loginContainer').hide();
+    $('#mainContent').show();
+    if (userRole === 'admin') {
+        $('#adminControls').show();
+        $('[data-admin-only="true"]').show();
+    } else {
+        $('#adminControls').hide();
+        $('[data-admin-only="true"]').hide();
+    }
     rerenderCards();
+}
+
+$(document).ready(function () {
+    userRole = localStorage.getItem('userRole');
+    if (userRole) {
+        showMainContent();
+    } else {
+        showLoginForm();
+    }
+
+    $(document).on('click', '.add-round-btn', function() {
+        var competitionId = $(this).data('competition-id');
+        addRound(competitionId);
+    });
+
+    $('#loginButton').on('click', function() {
+        const username = $('#username').val().trim();
+        if (username.length === 0) {
+            showAlert('Username cannot be empty', 'danger');
+            return;
+        }
+        login(username);
+    });
+
+    $('#logoutButton').on('click', function() {
+        logout();
+    });
+
+    $('#showModalButton').click(function() {
+        $('#newCompetition').modal('show');
+    });
+
     $('#createButton').on('click', () => {
+        if (userRole !== 'admin') {
+            showAlert('Only admins can add competitions', 'warning');
+            return;
+        }
+
         const name = $('#name').val().trim();
         const year = parseInt($('#year').val().trim());
         const prize_pool = parseFloat($('#prize').val().trim());
