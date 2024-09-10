@@ -29,7 +29,9 @@
                 <h6>Forduló:</h6>
                 <ul class="list-group mb-3">
                     @foreach($competition->round as $round)
-                        <li class="list-group-item">{{ $round->round_number }}. Furduló</li>
+                        <li class="list-group-item cursor-pointer round" data-round-id="{{ $round->id }}">
+                            {{ $round->round_number }}. Furduló
+                        </li>
                     @endforeach
                 </ul>
                 <div class="admin-controls" data-admin-only="true" style="display: none;">

@@ -18,7 +18,7 @@
 <x-user-login></x-user-login>
 
 <div id="mainContent" class="container-fluid px-0" style="display: none;">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <nav class="navbar navbar-expand navbar-light bg-light mb-4">
         <div class="container">
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
@@ -40,6 +40,8 @@
             <div class="d-flex justify-content-center gap-3 flex-wrap custom-card-container" style="overflow: hidden"></div>
         </div>
     </div>
+
+    <x-competitor-modal></x-competitor-modal>
 </div>
 
 <div id="alertContainer" class="alert position-fixed top-0 end-0 m-3" role="alert" style="display: none; z-index: 1050;"></div>

@@ -68,7 +68,9 @@ function addRound(competitionId) {
     $.ajax({
         url: '/api/newRound',
         method: 'POST',
-        data: { competition_id: competitionId },
+        data: {
+            competition_id: competitionId
+        },
         headers: {
             'X-User-Role': userRole
         },
@@ -109,7 +111,9 @@ function addCompetition(data) {
 }
 
 function login(username) {
-    $.post('/api/login', { username: username })
+    $.post('/api/login', {
+        username: username
+    })
         .done(function(response) {
             if (response.success) {
                 userRole = response.role;
@@ -142,7 +146,29 @@ function showMainContent() {
     rerenderCards();
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
+    $(document).on('click', '.round', function() {
+        var roundId = $(this).data('round-id');
+
+        $.ajax({
+            url: '/api/getCompetitors/' + roundId,
+            type: 'GET',
+            success: function(response) {
+                $('#competitorsList').empty();
+                console.log(response)
+                response.forEach(function(competitor) {
+                    $('#competitorsList').append('<li class="list-group-item">' + competitor.username + '</li>');
+                });
+
+                $('#competitorsModal').modal('show');
+            },
+            error: function(xhr) {
+                console.log('Error:', xhr.responseText);
+            }
+        });
+    });
+
+
     userRole = localStorage.getItem('userRole');
     if (userRole) {
         showMainContent();
@@ -184,7 +210,13 @@ $(document).ready(function () {
         const start_date = $('#start_date').val();
         const end_date = $('#end_date').val();
 
-        const data = { name, year, prize_pool, start_date, end_date };
+        const data = {
+            name,
+            year,
+            prize_pool,
+            start_date,
+            end_date
+        };
         const errors = validateInput(data);
 
         if (errors.length === 0) {
