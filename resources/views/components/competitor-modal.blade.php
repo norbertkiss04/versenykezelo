@@ -1,16 +1,18 @@
 <div class="modal fade" id="competitorsModal" tabindex="-1" aria-labelledby="competitorsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="competitorsModalLabel">Versenyzők</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <ul id="competitorsList" class="list-group">
+                <ul id="competitorsList" class="list-group mb-3">
                 </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégse</button>
+
+                <select id="availableUsersDropdown" class="form-select mb-3" data-admin-only="true" style="display: none">
+                    <option value="">Felhasználó</option>
+                </select>
+                <button id="addCompetitorButton" class="btn btn-primary" data-admin-only="true" style="display: none">Versenyző hozzáadása</button>
             </div>
         </div>
     </div>
