@@ -37,9 +37,7 @@
     <!-- COMPETITIONS -->
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="d-flex justify-content-center gap-3 flex-wrap custom-card-container"></div>
-            </div>
+            <div class="d-flex justify-content-center gap-3 flex-wrap custom-card-container" style="overflow: hidden"></div>
         </div>
     </div>
 </div>

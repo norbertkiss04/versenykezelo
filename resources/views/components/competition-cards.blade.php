@@ -1,5 +1,5 @@
 @foreach($competitions as $competition)
-    <div class="card mb-4 border-0 shadow-lg" style="border-radius: 15px; overflow: hidden;">
+    <div class="card mb-4 border-0 shadow-sm" style="border-radius: 15px; overflow: hidden; width: 300px;">
         <div class="card-header bg-dark text-white py-4">
             <h5 class="mb-0 text-center">{{ $competition->name }}</h5>
         </div>
