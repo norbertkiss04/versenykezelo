@@ -54,4 +54,21 @@ class RoundController extends Controller
             ], 500);
         }
     }
+
+    public function deleteRound($id, Request $request)
+    {
+        if (!$this->isAdmin($request)) {
+            return response()->json(['success' => false, 'message' => 'Csak adminok törölhetnek fordulókat'], 403);
+        }
+
+        try {
+            $round = Round::findOrFail($id);
+            $round->delete();
+
+            return response()->json(['success' => true, 'message' => 'Forduló sikeresen törölve'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Forduló nem található vagy nem törölhető'], 500);
+        }
+    }
+
 }

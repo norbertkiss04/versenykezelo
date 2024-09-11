@@ -13,6 +13,9 @@
                     <option value="">Felhasználó</option>
                 </select>
                 <button id="addCompetitorButton" class="btn btn-primary" data-admin-only="true" style="display: none">Versenyző hozzáadása</button>
+                <button id="deleteRoundButton" class="btn btn-danger mt-3" data-admin-only="true" style="display: none">
+                    Forduló törlése
+                </button>
             </div>
         </div>
     </div>
