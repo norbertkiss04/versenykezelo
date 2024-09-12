@@ -22,3 +22,4 @@ Route::post('/competitors', [CompetitorController::class, 'addCompetitor']);
 Route::delete('/competitors', [CompetitorController::class, 'removeCompetitor']);
 route::delete('/rounds/{id}', [RoundController::class, 'deleteRound']);
 Route::post('/login', [UserController::class, 'login']);
+Route::delete('/competitions/{competitionId}', [CompetitionController::class, 'deleteCompetition']);

@@ -311,4 +311,26 @@ $(document).ready(function() {
             });
         }
     });
+
+    $(document).on('click', '.delete-competition-btn', function() {
+        const competitionId = $(this).data('competition-id');
+
+        if (confirm('Biztosan törölni szeretnéd ezt a versenyt?')) {
+            $.ajax({
+                url: '/api/competitions/' + competitionId,
+                method: 'DELETE',
+                headers: {
+                    'X-User-Role': userRole
+                },
+                success: function(response) {
+                    showAlert('Verseny sikeresen törölve', 'success');
+                    rerenderCards();
+                },
+                error: function(error) {
+                    showAlert('A törlés sikertelen volt', 'danger');
+                }
+            });
+        }
+    });
+
 });

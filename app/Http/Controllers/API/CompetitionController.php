@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Competitor;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Competition;
@@ -59,6 +60,35 @@ class CompetitionController extends Controller
             return response()->json([
                 'success' => false,
                 'message' =>  $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function deleteCompetition(Request $request, $competitionId)
+    {
+        if (!$this->isAdmin($request)) {
+            return response()->json(['success' => false, 'message' => 'Csak adminok törölhetnek versenyeket'], 403);
+        }
+
+        try {
+            $competition = Competition::findOrFail($competitionId);
+
+            foreach ($competition->round as $round) {
+                Competitor::where('round_id', $round->id)->delete();
+                $round->delete();
+            }
+
+            $competition->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Verseny sikeresen törölve',
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
