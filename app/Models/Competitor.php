@@ -9,5 +9,4 @@ class Competitor extends Model
 {
     protected $fillable = ['user_id', 'round_id'];
     public $timestamps = false;
-    use HasFactory;
 }

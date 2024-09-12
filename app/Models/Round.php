@@ -16,6 +16,5 @@ class Round extends Model
         return $this->belongsTo(Competition::class);
     }
 
-    use HasFactory;
     use SoftDeletes;
 }
