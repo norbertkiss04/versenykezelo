@@ -32,8 +32,8 @@
                         </li>
                     @endforeach
                 </ul>
-                <div class="admin-controls d-flex flex-column gap-2 " data-admin-only="true" style="display: none;">
-                    <button class="btn btn-outline-success add-round-btn" data-competition-id="{{ $competition->id }}">Forduló hozzáadása</button>
+                <div data-admin-only="true" style="display: none;">
+                    <button class="btn btn-outline-success add-round-btn mb-2" data-competition-id="{{ $competition->id }}">Forduló hozzáadása</button>
                     <button class="btn btn-outline-danger delete-competition-btn" data-competition-id="{{ $competition->id }}">Verseny törlése</button>
                 </div>
             </div>
