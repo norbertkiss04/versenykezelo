@@ -11,18 +11,18 @@ class CompetitionsSeeder extends Seeder
     {
         DB::table('competitions')->insert([
             [
-                'name' => 'Spring Championship',
+                'name' => 'Tavaszi Bajnokság',
                 'year' => 2024,
-                'prize_pool' => '10000',
-                'start_date' => '2024-03-01',
-                'end_date' => '2024-03-15',
+                'prize_pool' => '15000',
+                'start_date' => '2024-04-01',
+                'end_date' => '2024-04-10',
             ],
             [
-                'name' => 'Summer Tournament',
+                'name' => 'Nyári Kupa',
                 'year' => 2024,
-                'prize_pool' => '20000',
-                'start_date' => '2024-06-01',
-                'end_date' => '2024-06-15',
+                'prize_pool' => '3000',
+                'start_date' => '2024-07-01',
+                'end_date' => '2024-07-15',
             ],
         ]);
     }

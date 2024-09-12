@@ -11,22 +11,28 @@ class AppUsersSeeder extends Seeder
     {
         DB::table('app_users')->insert([
             [
-                'username' => 'john_doe',
-                'email' => 'john@example.com',
-                'phone_number' => '123456789',
-                'address' => '123 Elm St, Springfield',
+                'username' => 'peter_kovacs',
+                'email' => 'peter.kovacs@example.hu',
+                'phone_number' => '0612345678',
+                'address' => 'Budapest, Andrássy út 10, 1061',
             ],
             [
-                'username' => 'jane_doe',
-                'email' => 'jane@example.com',
-                'phone_number' => '987654321',
-                'address' => '456 Oak St, Springfield',
+                'username' => 'anna_szabo',
+                'email' => 'anna.szabo@example.hu',
+                'phone_number' => '0620987654',
+                'address' => 'Debrecen, Piac utca 12, 4024',
             ],
             [
-                'username' => 'admin_user',
-                'email' => 'admin@example.com',
-                'phone_number' => '555555555',
-                'address' => '789 Pine St, Springfield',
+                'username' => 'gabor_nagy',
+                'email' => 'gabor.nagy@example.hu',
+                'phone_number' => '0670123456',
+                'address' => 'Győr, Baross út 15, 9021',
+            ],
+            [
+                'username' => 'katinka_toth',
+                'email' => 'katinka.toth@example.hu',
+                'phone_number' => '0670987654',
+                'address' => 'Pécs, Kossuth tér 7, 7621',
             ],
         ]);
     }
